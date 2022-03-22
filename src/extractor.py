@@ -1,4 +1,5 @@
 import math
+from multiprocessing import Process, Manager
 
 import pandas as pd
 import requests as re
@@ -6,6 +7,7 @@ from bs4 import BeautifulSoup
 
 STAGING_PATH = "/home/akko/cayena-challenge/.staged.csv"
 
+N_THREADS = 4
 BASE_URL = "https://books.toscrape.com/"
 CATALOGUE_PATH = "catalogue/" 
 PAGINATION_PATH = "catalogue/page-{}.html"
@@ -33,15 +35,24 @@ class Extractor():
         self.__set_metainfo()
 
     def scrape_books(self, csv_stage=True):
-        book_list = []
 
-        for page_num in range(1, self.n_pages + 1):
-            page = re.get(self.base_url + self.pagination_path.format(page_num))
-            books = BeautifulSoup(page.text, "html.parser").find_all("article", class_=BOOK_CLASS)
-            for book in books:
-                book_path = self.catalogue_path + book.find("h3").find("a").attrs['href']
-                book_list.append(self.scrape_bookpage(book_path))
-    
+        manager = Manager()
+        book_list = manager.list()
+        pool = []
+
+        start = 1
+        for i in range(N_THREADS):
+            end = min(start + (self.n_pages//N_THREADS), self.n_pages)
+            print(start, end)
+            pool.append(Process(target=self.__scrap_worker, args=(book_list, start, end)))
+            pool[i].start()
+            start = end + 1
+
+        for i in range(N_THREADS):
+            pool[i].join()
+        
+        book_list = list(book_list)
+
         df = pd.DataFrame(book_list, columns=FIELD_SCHEMA)
         
         if csv_stage:
@@ -68,6 +79,17 @@ class Extractor():
             td_results[5],      # Availability
             td_results[6],      # Number os reviews
         )  
+
+
+    def __scrap_worker(self, list, start, end, *args):
+
+        for page_num in range(start, end+1):
+            page = re.get(self.base_url + self.pagination_path.format(page_num))
+            books = BeautifulSoup(page.text, "html.parser").find_all("article", class_=BOOK_CLASS)
+            for book in books:
+                book_path = self.catalogue_path + book.find("h3").find("a").attrs['href']
+                list.append(self.scrape_bookpage(book_path))
+
 
     def __set_metainfo(self):
         soup = self.__get_page(self.pagination_path.format("1"))
