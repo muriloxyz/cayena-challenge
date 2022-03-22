@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 STAGING_PATH = "/home/akko/cayena-challenge/.staged.csv"
 
 N_THREADS = 4
+
 BASE_URL = "https://books.toscrape.com/"
 CATALOGUE_PATH = "catalogue/" 
 PAGINATION_PATH = "catalogue/page-{}.html"
@@ -56,7 +57,7 @@ class Extractor():
         df = pd.DataFrame(book_list, columns=FIELD_SCHEMA)
         
         if csv_stage:
-            df.to_csv(STAGING_PATH)
+            df.to_csv(STAGING_PATH, sep=';', index=None)
         else:
             return df
 
