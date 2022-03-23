@@ -1,5 +1,5 @@
 CREATE TABLE book_info (
-    title varchar(200),
+    title varchar(500),
     rating int,
     category varchar(30),
     upc varchar(30),
