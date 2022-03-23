@@ -11,7 +11,7 @@ services:
   pgsql:
     build:
       context: .
-      dockerfile: Dockerfile-Python
+      dockerfile: Dockerfile-Postgres
     restart: always
     environment:
       POSTGRES_USER: cayena
