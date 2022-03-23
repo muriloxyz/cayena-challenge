@@ -36,6 +36,7 @@ class Extractor():
         self.__set_metainfo()
 
     def scrape_books(self, csv_stage=True):
+        print("Scrapping all books from {} with {} threads... This might take a while.".format(self.base_url, N_THREADS))
 
         manager = Manager()
         book_list = manager.list()

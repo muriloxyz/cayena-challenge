@@ -12,6 +12,7 @@ class Loader():
         self.__conn = self.__create_conn()
 
     def store_pg(self, table, schema):
+        print('Storing data to a postgresql table')
         df_to_store = self.__df.copy()
         df_to_store.columns = schema
         df_to_store.to_sql(table, self.__conn, index=False)
@@ -21,6 +22,6 @@ class Loader():
         pg_password = os.getenv("PG_PASS")
         pg_host = os.getenv("PG_HOST")
         pg_port = os.getenv("PG_PORT")
-        pg_db = os.getenv("PG_DATABASE")
+        pg_db = os.getenv("PG_DB")
         conn_url = PG_URL_FORMAT.format(pg_username, pg_password, pg_host, pg_port, pg_db)
         self.__conn = create_engine(conn_url)

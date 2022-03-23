@@ -18,6 +18,7 @@ class Transformer():
         return self.__df
 
     def __parse_df(self):
+        print('Formatting data...')
         self.__format_available()
         self.__format_category()
         self.__format_prices()
