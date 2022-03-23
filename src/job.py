@@ -40,7 +40,7 @@ def main():
     transformed['month'] = today.strftime("%m")
     transformed['day'] = today.strftime("%d")
 
-    Storing formatted data into PostgresSQL
+    # Storing formatted data into PostgresSQL
     loader = Loader(transformed)
     loader.store_pg(TABLE_NAME, DB_SCHEMA)
 
