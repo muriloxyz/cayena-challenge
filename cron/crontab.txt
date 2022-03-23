@@ -1,0 +1,1 @@
+0 3 * * * /project/cron/s_job.sh >> /var/log/script.log
