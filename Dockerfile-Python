@@ -9,7 +9,7 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY . .
 RUN apt-get update && apt-get install -y cron
-RUN chmod +x cron/s_entrypoint.sh cron/s_job.sh
+RUN chmod +x cron/s_entrypoint.sh src/job.py
 RUN /usr/bin/crontab cron/crontab.txt
 
 CMD ["./cron/s_entrypoint.sh"]

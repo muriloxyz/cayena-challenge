@@ -17,7 +17,28 @@ services:
       POSTGRES_USER: cayena
       POSTGRES_PASSWORD: cayena
       POSTGRES_DB: cayena
-    ports:
-      - 5432:5432
     volumes:
       - ./data:/var/lib/postgresql/data
+
+  sqlpad:
+    image: sqlpad/sqlpad:6.1
+    ports:
+      - 3000:3000
+    links:
+      - pgsql:database
+    environment:
+      SQLPAD_ADMIN: 'cayena@cayena.com'
+      SQLPAD_ADMIN_PASSWORD: 'cayena'
+      SQLPAD_APP_LOG_LEVEL: debug
+      SQLPAD_WEB_LOG_LEVEL: warn
+      SQLPAD_SEED_DATA_PATH: /etc/sqlpad/seed-data
+      SQLPAD_CONNECTIONS__pgdb__name: Postgres Database
+      SQLPAD_CONNECTIONS__pgdb__driver: postgres
+      SQLPAD_CONNECTIONS__pgdb__host: pgsql
+      SQLPAD_CONNECTIONS__pgdb__database: cayena
+      SQLPAD_CONNECTIONS__pgdb__username: cayena
+      SQLPAD_CONNECTIONS__pgdb__password: cayena
+      SQLPAD_CONNECTIONS__pgdb__multiStatementTransactionEnabled: 'true'
+      SQLPAD_CONNECTIONS__pgdb__idleTimeoutSeconds: 86400
+    volumes:
+    - ./seed-data:/etc/sqlpad/seed-data
