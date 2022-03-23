@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile-Python
+    links:
+      - pgsql:database
+
+  pgsql:
+    build:
+      context: .
+      dockerfile: Dockerfile-Python
+    restart: always
+    environment:
+      POSTGRES_USER: cayena
+      POSTGRES_PASSWORD: cayena
+      POSTGRES_DB: cayena
+    ports:
+      - 5432:5432

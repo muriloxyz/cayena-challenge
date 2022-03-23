@@ -1,0 +1,15 @@
+FROM python:3.8
+WORKDIR /project
+ENV PG_USER=cayena
+ENV PG_PASS=cayena
+ENV PG_HOST=pgsql
+ENV PG_PORT=5432
+ENV PG_DB=cayena
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+COPY . .
+RUN apt-get update && apt-get install -y cron
+RUN chmod +x cron/s_entrypoint.sh cron/s_job.sh
+RUN /usr/bin/crontab cron/crontab.txt
+
+CMD ["./cron/s_entrypoint.sh"]
