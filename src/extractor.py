@@ -44,7 +44,6 @@ class Extractor():
         start = 1
         for i in range(N_THREADS):
             end = min(start + (self.n_pages//N_THREADS), self.n_pages)
-            print(start, end)
             pool.append(Process(target=self.__scrap_worker, args=(book_list, start, end)))
             pool[i].start()
             start = end + 1
