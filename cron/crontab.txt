@@ -1,1 +1,1 @@
-26 * * * * printenv > /etc/environment; /project/src/job.py 1> /var/log/script.log 2> /var/log/script_stderr.log
+0 3 * * * printenv > /etc/environment; /project/src/job.py 1> /var/log/script.log 2> /var/log/script_stderr.log
