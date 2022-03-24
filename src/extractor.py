@@ -36,6 +36,12 @@ class Extractor():
         self.__set_metainfo()
 
     def scrape_books(self, csv_stage=True):
+        """
+        Searches the entire base site for all available books,
+        returning all desired info of each book per line in a
+        Pandas Dataframe, or saving it to a csv_file if csv_staged
+        is set to True.
+        """
         print("Scrapping all books from {} with {} threads... This might take a while.".format(self.base_url, N_THREADS))
 
         manager = Manager()
@@ -62,6 +68,11 @@ class Extractor():
             return df
 
     def scrape_bookpage(self, url_path):
+        """
+        Given the url path for a page of the base_site,
+        scrapes all useful info and returns it on a list.
+        """
+
         page = re.get(self.base_url + url_path)
         soup = BeautifulSoup(page.content, "html.parser")
         category = soup.find_all("li")[2].text # 3rd one is the category

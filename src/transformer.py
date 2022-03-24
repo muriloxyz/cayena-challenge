@@ -10,6 +10,12 @@ STAR_RATING_MAP = {
 
 class Transformer():
 
+    """
+    Given a raw data dataset from scraped books,
+    this class will format it and reassign the
+    appropiate data types for each column.
+    """
+
     def __init__(self, df):
         self.__df = df
         self.__parse_df()

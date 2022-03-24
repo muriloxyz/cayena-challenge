@@ -7,11 +7,24 @@ PG_URL_FORMAT = "postgresql://{}:{}@{}:{}/{}"
 
 class Loader():
 
+    """
+    This class is able to store a Pandas Dataframe
+    into a PostgreSQL table, creating a connection
+    through credentials obtained from environment 
+    variables.
+    """
+
+
     def __init__(self, df):
         self.__df = df
         self.__conn = self.__create_conn()
 
     def store_pg(self, table, schema):
+        """
+        Given a formated and correctly typed Pandas Dataframe, a table,
+        and the correct column names for the table, it stores
+        all data from the dataframe into the PGSQL table.
+        """
         print('Storing data to a postgresql table')
         df_to_store = self.__df.copy()
         df_to_store.columns = schema
