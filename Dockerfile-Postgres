@@ -1,2 +1,3 @@
 FROM postgres:14
 ADD ddl/create_table.sql /docker-entrypoint-initdb.d/
+COPY ddl/restore_data.sql /
