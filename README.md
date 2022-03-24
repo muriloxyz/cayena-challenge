@@ -13,7 +13,6 @@ The object of analysis for this challenge is the book information from the [Book
     ```sh
     git clone https://github.com/muriloxyz/cayena-challenge.git && cd cayena-challenge
     ```
-    ```
 2. Initialize the docker-compose script:
     ```sh
     docker-compose up -d
