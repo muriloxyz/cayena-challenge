@@ -19,7 +19,7 @@ The object of analysis for this challenge is the book information from the [Book
     ```
 3. Restore the data for the Postgres:
     ```sh
-    cat ddl/restore_data.sql | docker exec cayena-challenge_pgsql_1 psql -h localhost -p 5432 -U cayena -d cayena
+    docker exec cayena-challenge_pgsql_1 psql -h localhost -p 5432 -U cayena -d cayena -f restore_data.sql
     ```
 4. Access the data platform (**SqlPad**) within ``http://localhost:3000``. The default user is ``cayena@cayena.com``, and it's password is ``cayena``. (Mindblown 🤯)
 5. Select your connection ``Postgres Database`` and start analysing your data inside the ``book_info`` table. 
