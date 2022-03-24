@@ -18,7 +18,9 @@ services:
       POSTGRES_PASSWORD: cayena
       POSTGRES_DB: cayena
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - type: bind
+        source: ./data
+        target: /var/lib/postgresql/data
 
   sqlpad:
     image: sqlpad/sqlpad:6.1
