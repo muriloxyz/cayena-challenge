@@ -9,18 +9,19 @@ The object of analysis for this challenge is the book information from the [Book
 **Requirements:** Docker and Docker Compose installed on your machine.
 
 
-1. Clone the repo and *cd* into the new directory
+1. Clone the repo and *cd* into the new directory:
     ```sh
     git clone https://github.com/muriloxyz/cayena-challenge.git && cd cayena-challenge
     ```
-2. Make sure the PostgreSQL data volume is readable and under your ownership everytime before you initialize the docker-compose script
-    ```sh
-    chmod 777 data
-    chown -R $USER:$USER data
     ```
-3. Initialize the docker-compose script:
+2. Initialize the docker-compose script:
     ```sh
     docker-compose up -d
+    ```
+3. Restore the data for the Postgres:
+    ```sh
+    docker cp ddl/restore_data.sql cayena-challenge_pgsql_1:/
+    docker exec cayena-challenge_pgsql_1 cat restore_data.sql | psql -H localhost -p 5432 -U cayena -d cayena
     ```
 4. Access the data platform (**SqlPad**) within ``http://localhost:3000``. The default user is ``cayena@cayena.com``, and it's password is ``cayena``. (Mindblown 🤯)
 5. Select your connection ``Postgres Database`` and start analysing your data inside the ``book_info`` table. 
@@ -31,8 +32,7 @@ For more info and how to use the SqlPad analytical platform (plus on how to buil
 ## Main takeaways
 
 - If you need daily data updates updates, keep the docker containers running! There's a cron job scheduled to scrape the website every day, 3am UTC time (00:00 Brazilian time). It will scrape the website and store all the processed data into the book_info table, leaving it ready for analysis;
-- It is possible to trigger the job manually! But you'll need to enter the worker container to execute the python job;
-- The ``data`` directory is a docker volume used by the PostgreSQL container, and contains all of it's data.
+- It is possible to trigger the job manually! But you'll need to enter the worker container to execute the python job.
 
 ## Architecture
 ![Architecture-Diagram](https://user-images.githubusercontent.com/43562753/159823744-949c49a1-0b38-4d7d-941b-73edea8601cb.png)
